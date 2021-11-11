@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require("mongodb");
+const ObjectId = require('mongodb').ObjectId;
 const app = express();
 require('dotenv').config();
 
@@ -22,9 +23,24 @@ app.use(express.json());
 async function run() {
     try {
         await client.connect();
+        const database = client.db('camera_essentials');
+        const productsCollection = database.collection('products');
+
+        app.post('/products', async (req, res) => {
+            const product = req.body;
+            const result = await productsCollection.insertOne(product);
+            console.log('hit the post')
+            console.log(result);
+            res.json('post hit')
+        })
+        app.get('/products', async (req, res) => {
+            const cursor = productsCollection.find({});
+            const products = await cursor.toArray();
+            res.json(products)
+        })
     }
     finally {
-        await client.close();
+        // await client.close();
     }
 }
 run().catch(console.dir);
