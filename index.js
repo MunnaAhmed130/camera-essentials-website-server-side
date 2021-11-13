@@ -87,16 +87,15 @@ async function run() {
             res.json(purchases)
         })
 
-
+        // find all purchases
         app.get('/purchases', async (req, res) => {
-
             console.log(req.body)
-
             const cursor = purchaseCollection.find({});
             const purchases = await cursor.toArray();
             res.json(purchases)
         })
 
+        // find all reviews
         app.get('/reviews', async (req, res) => {
             console.log(req.body)
             const cursor = reviewCollection.find({});
@@ -104,6 +103,7 @@ async function run() {
             res.json(reviews)
         })
 
+        // add a review
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewCollection.insertOne(review);
@@ -151,7 +151,7 @@ async function run() {
             res.json(users)
         })
 
-        //
+        // check if user is admin
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
@@ -174,7 +174,7 @@ async function run() {
             res.json(result)
         })
 
-        //
+        // add a admin
         app.put('/users/admin', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email };
@@ -183,17 +183,6 @@ async function run() {
             console.log(result);
             res.json(result)
         })
-
-        //
-        // app.put('/users/user', async (req, res) => {
-        //     const user = req.body;
-        //     const filter = { email: user.email };
-        //     const updateDoc = { $set: { role: 'user' } };
-        //     const result = await usersCollection.updateOne(filter, updateDoc);
-        //     console.log(result);
-        //     res.json(result)
-        // })
-
 
         //add new users
         app.post('/users', async (req, res) => {
