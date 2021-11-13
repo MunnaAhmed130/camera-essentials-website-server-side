@@ -26,13 +26,30 @@ async function run() {
         const database = client.db('camera_essentials');
         const productsCollection = database.collection('products');
         const usersCollection = database.collection('users');
-        const purchaseCollection = database.collection('purchase')
+        const purchaseCollection = database.collection('purchase');
+        const reviewCollection = database.collection('reviews');
 
         // find all products
         app.get('/products', async (req, res) => {
-            const cursor = productsCollection.find({});
+            const cursor = productsCollection.find({}).limit(0);
             const products = await cursor.toArray();
             res.json(products)
+        })
+        // app.get('/products/query', async (req, res) => {
+        //     const cursor = productsCollection.find({}).limit(0);
+        //     const products = await cursor.toArray();
+
+        //     res.json(products)
+        // })
+
+        app.get('/products/query', async (req, res) => {
+            const limit = req.query.limit;
+            console.log(limit)
+            const int = parseInt(limit);
+            console.log(int)
+            const cursor = productsCollection.find({});
+            const purchases = await cursor.limit(int).toArray();
+            res.json(purchases)
         })
 
         // insert new products
@@ -79,6 +96,22 @@ async function run() {
             const purchases = await cursor.toArray();
             res.json(purchases)
         })
+
+        app.get('/reviews', async (req, res) => {
+            console.log(req.body)
+            const cursor = reviewCollection.find({});
+            const reviews = await cursor.toArray();
+            res.json(reviews)
+        })
+
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            console.log('hit the post')
+            console.log(result);
+            res.json(result)
+        })
+
 
         //find purchases by id
         app.get('/purchases/:id', async (req, res) => {
