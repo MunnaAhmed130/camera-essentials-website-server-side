@@ -24,7 +24,7 @@ app.use(express.json());
 
 async function run() {
     try {
-        await client.connect();
+        client.connect();
         const database = client.db("camera_essentials");
         const productsCollection = database.collection("products");
         const usersCollection = database.collection("users");
