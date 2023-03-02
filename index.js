@@ -10,7 +10,7 @@ const port = process.env.PORT || 4000;
 
 // uri
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dgg2e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-console.log(uri);
+// console.log(uri);
 
 // client
 const client = new MongoClient(uri, {
@@ -24,7 +24,7 @@ app.use(express.json());
 
 async function run() {
     try {
-        client.connect();
+        await client.connect();
         const database = client.db("camera_essentials");
         const productsCollection = database.collection("products");
         const usersCollection = database.collection("users");
