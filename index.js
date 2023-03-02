@@ -22,9 +22,9 @@ const client = new MongoClient(uri, {
 app.use(cors());
 app.use(express.json());
 
-async function run() {
+const run = async () => {
     try {
-        client.connect();
+        // client.connect();
 
         const database = client.db("camera_essentials");
         const productsCollection = database.collection("products");
@@ -109,7 +109,7 @@ async function run() {
         app.get("/reviews/query", async (req, res) => {
             const limit = req.query.limit;
             console.log(limit);
-            const int = parseInt(limit);
+            const int = Number(limit);
             console.log(int);
             const cursor = reviewCollection.find({});
             const reviews = await cursor.limit(int).toArray();
@@ -210,7 +210,7 @@ async function run() {
     } finally {
         // await client.close();
     }
-}
+};
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
