@@ -22,9 +22,10 @@ const client = new MongoClient(uri, {
 app.use(cors());
 app.use(express.json());
 
+await client.connect();
+
 async function run() {
     try {
-        await client.connect();
         const database = client.db("camera_essentials");
         const productsCollection = database.collection("products");
         const usersCollection = database.collection("users");
