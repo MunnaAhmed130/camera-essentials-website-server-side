@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient } = require("mongodb");
-const ObjectId = require("mongodb").ObjectId;
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+// const ObjectId = require("mongodb").ObjectId;
 const app = express();
 require("dotenv").config();
 
@@ -16,6 +16,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    serverApi: ServerApiVersion.v1,
 });
 
 // middleware
@@ -36,7 +37,7 @@ const run = async () => {
         app.get("/products", async (req, res) => {
             const cursor = productsCollection.find({});
             const products = await cursor.toArray();
-            res.json(products);
+            res.send(products);
         });
         // app.get('/products/query', async (req, res) => {
         //     const cursor = productsCollection.find({}).limit(0);
@@ -47,7 +48,7 @@ const run = async () => {
 
         app.get("/products/query", async (req, res) => {
             const limit = req.query.limit;
-            console.log(limit);
+            // console.log(limit);
             const int = Number(limit);
             console.log(int);
             const cursor = productsCollection.find({});
@@ -108,7 +109,7 @@ const run = async () => {
 
         app.get("/reviews/query", async (req, res) => {
             const limit = req.query.limit;
-            console.log(limit);
+            // console.log(limit);
             const int = Number(limit);
             console.log(int);
             const cursor = reviewCollection.find({});
