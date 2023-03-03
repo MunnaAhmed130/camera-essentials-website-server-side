@@ -34,7 +34,7 @@ const run = async () => {
 
         // find all products
         app.get("/products", async (req, res) => {
-            const cursor = productsCollection.find({}).limit(0);
+            const cursor = productsCollection.find({});
             const products = await cursor.toArray();
             res.json(products);
         });
@@ -48,7 +48,7 @@ const run = async () => {
         app.get("/products/query", async (req, res) => {
             const limit = req.query.limit;
             console.log(limit);
-            const int = parseInt(limit);
+            const int = Number(limit);
             console.log(int);
             const cursor = productsCollection.find({});
             const purchases = await cursor.limit(int).toArray();
