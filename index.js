@@ -24,7 +24,7 @@ app.use(express.json());
 
 const run = async () => {
     try {
-        // client.connect();
+        await client.connect();
 
         const database = client.db("camera_essentials");
         const productsCollection = database.collection("products");
@@ -211,7 +211,10 @@ const run = async () => {
         // await client.close();
     }
 };
-run().catch(console.dir);
+
+run().catch((err) => {
+    console.log(err);
+});
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
